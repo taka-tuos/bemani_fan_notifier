@@ -68,11 +68,11 @@ namespace bemani_fan_notifier
                         // URLかどうかだけは見る
                         if (url.StartsWith("https://"))
                         {
-                            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                            HttpClient client = new();
+                            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                            using HttpClient client = new();
 
                             // jsonをPOST
-                            using HttpResponseMessage response = await client.PostAsync(url, new StringContent(json, Encoding.UTF8));
+                            HttpResponseMessage response = await client.PostAsync(url, new StringContent(json, Encoding.UTF8, @"application/json"));
                             response.EnsureSuccessStatusCode();
                         }
                     }

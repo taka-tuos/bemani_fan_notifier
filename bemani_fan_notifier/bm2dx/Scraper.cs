@@ -43,7 +43,7 @@ namespace bemani_fan_notifier.bm2dx
             this.url = url.TrimEnd('/');
 
             // ハッシュリストを読んでおく
-            hashes = Utils.ReadSHA256HashListFromURL(url);
+            hashes = Utils.ReadSHA256HashListFromURL(this.url);
         }
 
         /// <summary>
@@ -96,14 +96,19 @@ namespace bemani_fan_notifier.bm2dx
                     // 今まで見たこと無いニュースか？
                     if (!hashes.Contains(hash))
                     {
+                        Console.WriteLine($"New Hash: {hash}, hashes.Count={hashes.Count}");
+                        
                         // ハッシュリストに足す
                         hashes.Add(hash);
 
                         // 標準出力に出す
-                        Console.WriteLine(json_string);
+                        //Console.WriteLine(json_string);
 
                         // WebHookを蹴る
                         WebHook.Kick(json_string);
+                        
+                        // 待つ
+                        Thread.Sleep(500);
                     }
                 }
             }

@@ -6,6 +6,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace bemani_fan_notifier.bm2dx
@@ -105,7 +106,8 @@ namespace bemani_fan_notifier.bm2dx
             foreach (var child in children)
             {
                 // スペースたくさんつけてインデントしてきよるので、行頭のだけは滅する
-                string rawcontent = first ? child.TextContent.TrimStart() : child.TextContent;
+                string rawrawcontent = first ? child.TextContent.TrimStart() : child.TextContent;
+                string rawcontent = Regex.Replace(rawrawcontent, @"(\s)\s+", "$1"); 
 
                 // 加工した現在の要素が乗ってくる
                 string content = "";
@@ -130,7 +132,10 @@ namespace bemani_fan_notifier.bm2dx
                 // li内のpは赤字(コナミ税が必要ですetc)なので太字にしておく
                 else if (child.NodeName == "P")
                 {
-                    content = "\n\n**" + rawcontent + "**";
+                    // なんかPタグの中は改行が交じるので
+                    string stripcontent = rawcontent.Replace("\n", " ");
+                    
+                    content = "\n\n" + "**" + stripcontent + "**";
                 }
 
                 // idx=0, 日付

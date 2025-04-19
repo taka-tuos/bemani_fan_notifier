@@ -58,16 +58,27 @@ namespace bemani_fan_notifier
                         string line = rawline.Trim();
 
                         // 64文字(256/4)
-                        if(line.Length == 64)
+                        if (line.Length == 64)
                         {
+                            Console.WriteLine($"Hash Loaded: {line}, hashes.Count={list.Count}");
+
                             list.Add(line);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"!Ignore Line: {line}, hashes.Count={list.Count}");
                         }
                     }
                 }
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException e)
             {
                 // 滅殺
+                Console.WriteLine(e.ToString());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
             }
 
             return list;
